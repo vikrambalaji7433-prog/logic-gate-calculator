@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logic Gate Based Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Logic Gate Based Calculator</h1>
+            <p class="subtitle">Understanding Arithmetic Through Digital Logic</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Calculator Section -->
+            <section class="calculator-section">
+                <h2>Binary Calculator</h2>
+                <div class="number-mode">
+                    <label class="mode-label">Number Representation:</label>
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" data-mode="unsigned">Unsigned</button>
+                        <button class="mode-btn" data-mode="signed">Signed (Two's Complement)</button>
+                    </div>
+                    <p class="mode-info" id="modeInfo">Unsigned: 0 to 255 (no negative numbers)</p>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-field">
+                        <label for="input1">Binary Input A:</label>
+                        <div class="input-with-converter">
+                            <input type="text" id="input1" placeholder="Enter binary (e.g., 1010)" maxlength="8">
+                            <button class="converter-btn" id="converterBtn1">📝 Enter Decimal</button>
+                        </div>
+                        <span class="decimal-value">Unsigned: <span id="decimal1">0</span></span>
+                        <span class="decimal-value signed-value">Signed: <span id="signed1">0</span></span>
+                    </div>
+                    <div class="input-field">
+                        <label for="input2">Binary Input B:</label>
+                        <div class="input-with-converter">
+                            <input type="text" id="input2" placeholder="Enter binary (e.g., 0110)" maxlength="8">
+                            <button class="converter-btn" id="converterBtn2">📝 Enter Decimal</button>
+                        </div>
+                        <span class="decimal-value">Unsigned: <span id="decimal2">0</span></span>
+                        <span class="decimal-value signed-value">Signed: <span id="signed2">0</span></span>
+                    </div>
+                </div>
+
+                <div class="operation-buttons">
+                    <button class="op-btn" data-operation="add">Addition (+)</button>
+                    <button class="op-btn" data-operation="subtract">Subtraction (-)</button>
+                    <button class="op-btn" data-operation="multiply">Multiplication (×)</button>
+                    <button class="op-btn" data-operation="divide">Division (÷)</button>
+                </div>
+
+                <div class="result-section">
+                    <h3>Result</h3>
+                    <div class="result-display">
+                        <div class="result-item">
+                            <span class="label">Binary:</span>
+                            <span class="value" id="resultBinary">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Unsigned Decimal:</span>
+                            <span class="value" id="resultDecimal">-</span>
+                        </div>
+                        <div class="result-item signed-result">
+                            <span class="label">Signed Decimal:</span>
+                            <span class="value" id="resultSigned">-</span>
+                        </div>
+                        <div class="result-item" id="overflowIndicator" style="display: none;">
+                            <span class="label">⚠️ Overflow:</span>
+                            <span class="value" style="color: #f5576c;">Yes</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Logic Gate Visualization Section -->
+            <section class="visualization-section">
+                <h2>Logic Gate Visualization</h2>
+                <div class="operation-info">
+                    <p id="operationDescription">Select an operation to see how logic gates work</p>
+                </div>
+                
+                <div class="gate-display" id="gateDisplay">
+                    <div class="no-operation">
+                        <p>👆 Click an operation above to visualize the logic gates</p>
+                    </div>
+                </div>
+
+                <div class="step-by-step" id="stepByStep"></div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Decimal to Binary Converter Modal -->
+    <div class="modal" id="converterModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Decimal to Binary Converter</h2>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-description">Enter a decimal number to convert it to binary</p>
+                
+                <div class="converter-section">
+                    <label for="decimalInput">Decimal Number:</label>
+                    <input type="number" id="decimalInput" placeholder="Enter decimal (0-255 for unsigned, -128 to 127 for signed)">
+                </div>
+
+                <div class="conversion-mode">
+                    <label>
+                        <input type="radio" name="conversionMode" value="unsigned" checked>
+                        Unsigned (0 to 255)
+                    </label>
+                    <label>
+                        <input type="radio" name="conversionMode" value="signed">
+                        Signed (-128 to 127)
+                    </label>
+                </div>
+
+                <div class="conversion-result" id="conversionResult" style="display: none;">
+                    <h3>Result:</h3>
+                    <div class="result-box">
+                        <div class="result-row">
+                            <span class="result-label">Binary (8-bit):</span>
+                            <span class="result-value" id="convertedBinary">-</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="result-label">Hexadecimal:</span>
+                            <span class="result-value" id="convertedHex">-</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="result-label">Decimal Check:</span>
+                            <span class="result-value" id="convertedDecimal">-</span>
+                        </div>
+                    </div>
+                    <div class="conversion-steps" id="conversionSteps"></div>
+                </div>
+
+                <div class="error-message" id="converterError"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn convert-btn" id="convertBtn">Convert</button>
+                <button class="modal-btn use-btn" id="useBtn" style="display: none;">Use This Binary</button>
+                <button class="modal-btn cancel-btn" id="cancelBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
